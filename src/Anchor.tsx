@@ -21,7 +21,7 @@ type anchorProps = {
   label?: string;
 };
 
-export const Anchor = React.forwardRef(
+export const Anchor = React.forwardRef<HTMLAnchorElement>(
   (
     {
       onClick,
