@@ -1,9 +1,10 @@
 import * as React from "react";
-import { Link } from "gatsby";
+import Link from './GatsbyLink'
 import { Anchor } from "./Anchor";
-import { CssStyles } from "./Anchor";
+import CSS from "csstype";
 
-type wmkLinkProps = {
+
+export interface WmkLinkProps {
   to?: string;
   target?: string;
   children: React.ReactNode;
@@ -11,8 +12,9 @@ type wmkLinkProps = {
   tel?: boolean;
   className?: string;
   label?: string;
-  style?: CssStyles;
-};
+  style?: CSS.Properties;
+  title?: string;
+}
 
 export const WmkLink = React.forwardRef(
   (
@@ -24,8 +26,9 @@ export const WmkLink = React.forwardRef(
       tel,
       style,
       className,
-      label
-    }: wmkLinkProps,
+      label,
+      title
+    }: WmkLinkProps,
     ref
   ) => {
     if (target || mailto || tel) {
@@ -42,7 +45,8 @@ export const WmkLink = React.forwardRef(
           }
           target={target}
           className={className}
-          label={label}>
+          label={label}
+          title={title}>
           {children}
         </Anchor>
       );
@@ -53,7 +57,8 @@ export const WmkLink = React.forwardRef(
           to={to}
           style={style}
           className={className}
-          aria-label={label}>
+          aria-label={label}
+          title={title}>
           {children}
         </Link>
       );

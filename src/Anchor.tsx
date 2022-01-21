@@ -1,25 +1,23 @@
 import * as React from "react";
 import { wmkClass } from "./logic";
+import CSS from "csstype";
 
-export interface CssStyles {
-  [StandardLonghandProperties: string]: string | number | {};
-}
-
-type anchorProps = {
+export interface AnchorProps {
   onClick?: React.MouseEventHandler;
   to: string;
   id?: string;
   className?: string;
   target?: string;
   children?: React.ReactNode;
-  style?: CssStyles;
+  style?: CSS.Properties;
   speed?: number;
   mailto?: boolean;
   tel?: boolean;
   animate?: boolean;
   rel?: string;
   label?: string;
-};
+  title?: string;
+}
 
 export const Anchor = React.forwardRef<HTMLAnchorElement>(
   (
@@ -36,8 +34,9 @@ export const Anchor = React.forwardRef<HTMLAnchorElement>(
       tel,
       animate,
       rel,
-      label
-    }: anchorProps,
+      label,
+      title
+    }: AnchorProps,
     ref
   ) => {
     const _style = animate
@@ -58,7 +57,8 @@ export const Anchor = React.forwardRef<HTMLAnchorElement>(
         ref={ref}
         style={_style}
         aria-label={label}
-        onClick={onClick}>
+        onClick={onClick}
+        title={title}>
         {children}
       </a>
     );
