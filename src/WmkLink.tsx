@@ -30,38 +30,34 @@ export const WmkLink = React.forwardRef<HTMLDivElement>(
     }: WmkLinkProps,
     ref
   ) => {
-    const InnerJsx =
-      target || mailto || tel
-        ? () => (
-            <Anchor
-              style={style}
-              to={
-                mailto
-                  ? `mailto:${to || children}`
-                  : tel
-                  ? `tel:${to || children}`
-                  : to
-              }
-              target={target}
-              className={className}
-              label={label}
-              title={title}>
-              {children}
-            </Anchor>
-          )
-        : () => (
-            <Link
-              to={to}
-              style={style}
-              className={className}
-              aria-label={label}
-              title={title}>
-              {children}
-            </Link>
-          );
     return (
       <div ref={ref}>
-        <InnerJsx />
+        {target || mailto || tel ? (
+          <Anchor
+            style={style}
+            to={
+              mailto
+                ? `mailto:${to || children}`
+                : tel
+                ? `tel:${to || children}`
+                : to
+            }
+            target={target}
+            className={className}
+            label={label}
+            title={title}>
+            {children}
+          </Anchor>
+        ) : (
+          <Link
+            to={to}
+            style={style}
+            className={className}
+            aria-label={label}
+            title={title}>
+            {children}
+          </Link>
+        )}
       </div>
     );
   }
