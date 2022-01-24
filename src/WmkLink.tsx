@@ -3,6 +3,8 @@ import { Link } from "gatsby";
 import { Anchor } from "./Anchor";
 import CSS from "csstype";
 
+//type LinkProps = React.HTMLProps<HTMLDivElement>
+
 export interface WmkLinkProps {
   to?: string;
   target?: string;
@@ -15,7 +17,7 @@ export interface WmkLinkProps {
   title?: string;
 }
 
-export const WmkLink = React.forwardRef<HTMLDivElement>(
+export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
   (
     {
       to,
