@@ -1,8 +1,7 @@
 import * as React from "react";
-import Link from './GatsbyLink'
+import { Link } from "gatsby";
 import { Anchor } from "./Anchor";
 import CSS from "csstype";
-
 
 export interface WmkLinkProps {
   to?: string;
@@ -16,7 +15,7 @@ export interface WmkLinkProps {
   title?: string;
 }
 
-export const WmkLink = React.forwardRef(
+export const WmkLink = React.forwardRef<HTMLDivElement>(
   (
     {
       to,
@@ -31,37 +30,39 @@ export const WmkLink = React.forwardRef(
     }: WmkLinkProps,
     ref
   ) => {
-    if (target || mailto || tel) {
-      return (
-        <Anchor
-          style={style}
-          ref={ref}
-          to={
-            mailto
-              ? `mailto:${to || children}`
-              : tel
-              ? `tel:${to || children}`
-              : to
-          }
-          target={target}
-          className={className}
-          label={label}
-          title={title}>
-          {children}
-        </Anchor>
-      );
-    } else {
-      return (
-        <Link
-          ref={ref}
-          to={to}
-          style={style}
-          className={className}
-          aria-label={label}
-          title={title}>
-          {children}
-        </Link>
-      );
-    }
+    const InnerJsx =
+      target || mailto || tel
+        ? () => (
+            <Anchor
+              style={style}
+              to={
+                mailto
+                  ? `mailto:${to || children}`
+                  : tel
+                  ? `tel:${to || children}`
+                  : to
+              }
+              target={target}
+              className={className}
+              label={label}
+              title={title}>
+              {children}
+            </Anchor>
+          )
+        : () => (
+            <Link
+              to={to}
+              style={style}
+              className={className}
+              aria-label={label}
+              title={title}>
+              {children}
+            </Link>
+          );
+    return (
+      <div ref={ref}>
+        <InnerJsx />
+      </div>
+    );
   }
 );
