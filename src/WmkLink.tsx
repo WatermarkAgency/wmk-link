@@ -15,6 +15,7 @@ export interface WmkLinkProps {
   label?: string;
   style?: CSS.Properties;
   title?: string;
+  wrapperStyle?: CSS.Properties;
 }
 
 export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
@@ -28,12 +29,13 @@ export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
       style,
       className,
       label,
-      title
+      title,
+      wrapperStyle
     }: WmkLinkProps,
     ref
   ) => {
     return (
-      <div ref={ref}>
+      <div ref={ref} style={{ display: `inline`, ...wrapperStyle }}>
         {target || mailto || tel ? (
           <Anchor
             style={style}
