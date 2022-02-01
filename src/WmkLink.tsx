@@ -34,18 +34,16 @@ export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
     }: WmkLinkProps,
     ref
   ) => {
+    const mailToText = to || children;
+    const _telText = to || children || "";
+    const telText =
+      typeof _telText === "string" ? _telText.replace(/\D/g, "") : _telText;
     return (
       <div ref={ref} style={{ display: `inline`, ...wrapperStyle }}>
         {target || mailto || tel ? (
           <Anchor
             style={style}
-            to={
-              mailto
-                ? `mailto:${to || children}`
-                : tel
-                ? `tel:${to || children}`
-                : to
-            }
+            to={mailto ? `mailto:${mailToText}` : tel ? `tel:${telText}` : to}
             target={target}
             className={className}
             label={label}
