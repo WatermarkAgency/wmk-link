@@ -1,22 +1,50 @@
 import * as React from "react";
 import { wmkClass } from "./logic";
-import CSS from "csstype";
+import { LinkTarget } from "./WmkLink";
+
+export type AnchorRel =
+  | "alternate"
+  | "author"
+  | "bookmark"
+  | "external"
+  | "help"
+  | "license"
+  | "next"
+  | "nofollow"
+  | "noreferrer"
+  | "noopener"
+  | "prev"
+  | "search"
+  | "tag";
+
+export type AnchorReferrerPolicy =
+  | "no-referrer"
+  | "no-referrer-when-downgrade"
+  | "origin"
+  | "origin-when-cross-origin"
+  | "same-origin"
+  | "strict-origin-when-cross-origin"
+  | "unsafe-url";
 
 export interface AnchorProps {
-  onClick?: React.MouseEventHandler;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   to: string;
   id?: string;
   className?: string;
-  target?: string;
+  target?: LinkTarget;
   children?: React.ReactNode;
-  style?: CSS.Properties;
+  style?: React.CSSProperties;
   speed?: number;
   mailto?: boolean;
   tel?: boolean;
   animate?: boolean;
-  rel?: string;
+  rel?: AnchorRel[];
   label?: string;
   title?: string;
+  role?: React.AriaRole;
+  download?: true;
+  hreflang?: string;
+  referrerpolicy?: AnchorReferrerPolicy;
 }
 
 export const Anchor = ({
@@ -33,13 +61,18 @@ export const Anchor = ({
   animate,
   rel,
   label,
-  title
+  title,
+  role,
+  download,
+  hreflang,
+  referrerpolicy
 }: AnchorProps) => {
   const _style = animate
     ? { ...style, transition: `all ${speed}s ease` }
     : style;
-  const _target = target ? "_" + target.replace("_", "") : null;
-  const _rel = _target === "_blank" ? "noopener noreferrer" : rel;
+  const _target = target ? "_" + target.replace("_", "") : undefined;
+  const _rel =
+    !rel && _target === "_blank" ? "noopener noreferrer" : rel.join(" ");
   const prefix = tel ? "tel:" : mailto ? "mailto:" : "";
   const _to = tel ? to.replace(/\D/g, "") : to;
   const _link = tel ? "tel" : mailto ? "mailto" : "anchor";
@@ -53,7 +86,11 @@ export const Anchor = ({
       style={_style}
       aria-label={label}
       onClick={onClick}
-      title={title}>
+      title={title}
+      role={role}
+      download={download ? download : undefined}
+      hrefLang={hreflang}
+      referrerPolicy={referrerpolicy}>
       {children}
     </a>
   );

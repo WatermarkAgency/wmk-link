@@ -1,21 +1,35 @@
 import * as React from "react";
 import { Link } from "gatsby";
-import { Anchor } from "./Anchor";
-import CSS from "csstype";
+import { Anchor, AnchorReferrerPolicy, AnchorRel } from "./Anchor";
 
 //type LinkProps = React.HTMLProps<HTMLDivElement>
 
+export type LinkTarget =
+  | "_blank"
+  | "blank"
+  | "_parent"
+  | "parent"
+  | "_self"
+  | "self"
+  | "_top"
+  | "top";
+
 export interface WmkLinkProps {
   to?: string;
-  target?: string;
+  target?: LinkTarget;
   children: React.ReactNode;
   mailto?: boolean;
   tel?: boolean;
   className?: string;
   label?: string;
-  style?: CSS.Properties;
+  style?: React.CSSProperties;
   title?: string;
-  wrapperStyle?: CSS.Properties;
+  wrapperStyle?: React.CSSProperties;
+  role?: React.AriaRole;
+  rel?: AnchorRel[];
+  download?: true;
+  hreflang?: string;
+  referrerpolicy?: AnchorReferrerPolicy;
 }
 
 export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
@@ -30,7 +44,12 @@ export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
       className,
       label,
       title,
-      wrapperStyle
+      wrapperStyle,
+      role,
+      rel,
+      download,
+      hreflang,
+      referrerpolicy
     }: WmkLinkProps,
     ref
   ) => {
@@ -47,7 +66,12 @@ export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
             target={target}
             className={className}
             label={label}
-            title={title}>
+            title={title}
+            role={role}
+            rel={rel}
+            download={download}
+            hreflang={hreflang}
+            referrerpolicy={referrerpolicy}>
             {children}
           </Anchor>
         ) : (
@@ -56,7 +80,8 @@ export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
             style={style}
             className={className}
             aria-label={label}
-            title={title}>
+            title={title}
+            role={role}>
             {children}
           </Link>
         )}
