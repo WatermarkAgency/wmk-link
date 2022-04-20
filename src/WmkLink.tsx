@@ -45,7 +45,7 @@ export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
       label,
       title,
       wrapperStyle,
-      role,
+      role = "link",
       rel,
       download,
       hreflang,
