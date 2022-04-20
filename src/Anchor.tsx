@@ -72,7 +72,11 @@ export const Anchor = ({
     : style;
   const _target = target ? "_" + target.replace("_", "") : undefined;
   const _rel =
-    !rel && _target === "_blank" ? "noopener noreferrer" : rel.join(" ");
+    !rel && _target === "_blank"
+      ? "noopener noreferrer"
+      : Array.isArray(rel)
+      ? rel.join(" ")
+      : "";
   const prefix = tel ? "tel:" : mailto ? "mailto:" : "";
   const _to = tel ? to.replace(/\D/g, "") : to;
   const _link = tel ? "tel" : mailto ? "mailto" : "anchor";
