@@ -1,8 +1,13 @@
 import * as React from "react";
 import { Link } from "gatsby";
 import { Anchor, AnchorReferrerPolicy, AnchorRel } from "./Anchor";
+import { GtmDataLayer, ToGtmDataLayer } from ".";
 
-//type LinkProps = React.HTMLProps<HTMLDivElement>
+declare global {
+  interface Window {
+    dataLayer: GtmDataLayer;
+  }
+}
 
 export type LinkTarget =
   | "_blank"
@@ -15,6 +20,7 @@ export type LinkTarget =
   | "top";
 
 export interface WmkLinkProps {
+  id?: string;
   to?: string;
   target?: LinkTarget;
   children: React.ReactNode;
@@ -30,11 +36,18 @@ export interface WmkLinkProps {
   download?: true;
   hreflang?: string;
   referrerpolicy?: AnchorReferrerPolicy;
+  toDataLayer?: ToGtmDataLayer;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
+/**
+ * Handles links to other pages within an app,
+ * external links, or links to files.
+ */
 export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
   (
     {
+      onClick,
       to,
       target,
       children,
@@ -49,18 +62,41 @@ export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
       rel,
       download,
       hreflang,
-      referrerpolicy
+      referrerpolicy,
+      toDataLayer,
+      id
     }: WmkLinkProps,
     ref
   ) => {
+    const [dataLayer, setDataLayer] = React.useState<GtmDataLayer>();
     const mailToText = to || children;
     const _telText = to || children || "";
     const telText =
       typeof _telText === "string" ? _telText.replace(/\D/g, "") : _telText;
+
+    React.useEffect(() => {
+      const currentDataLayer = window && window.dataLayer;
+      if (toDataLayer && currentDataLayer) {
+        setDataLayer(currentDataLayer);
+      }
+    }, [toDataLayer]);
     return (
       <div ref={ref} style={{ display: `inline`, ...wrapperStyle }}>
         {target || mailto || tel ? (
           <Anchor
+            id={id}
+            onClick={
+              onClick
+                ? onClick
+                : toDataLayer && dataLayer
+                ? () => {
+                    dataLayer.push({
+                      event: toDataLayer.event,
+                      ...toDataLayer.params
+                    });
+                  }
+                : undefined
+            }
             style={style}
             to={mailto ? `mailto:${mailToText}` : tel ? `tel:${telText}` : to}
             target={target}
@@ -76,6 +112,19 @@ export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
           </Anchor>
         ) : (
           <Link
+            id={id}
+            onClick={
+              onClick
+                ? onClick
+                : toDataLayer && dataLayer
+                ? () => {
+                    dataLayer.push({
+                      event: toDataLayer.event,
+                      ...toDataLayer.params
+                    });
+                  }
+                : undefined
+            }
             to={to}
             style={style}
             className={className}

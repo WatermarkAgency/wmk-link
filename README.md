@@ -16,3 +16,7 @@ const WmkLink = React.forwardRef(
 
 _target_ any target will trigger external link. It's best to leave target _undefined_ if intended to use Gatsby <Link>.
 _to_ can be left blank for _tel_ and _mailto_ if {children} is phone number / email.
+
+### GTM Data Layer
+
+Pass an object (_ToGtmDatalayer_: {event: string, params: {[key: string]: string}[]}) to the **toDataLayer** prop to trigger an event and meta data in Google Tag Manager

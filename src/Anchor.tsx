@@ -58,7 +58,7 @@ export const Anchor = ({
   speed = 0.3,
   mailto,
   tel,
-  animate,
+  animate = true,
   rel,
   label,
   title,
@@ -68,7 +68,7 @@ export const Anchor = ({
   referrerpolicy
 }: AnchorProps) => {
   const _style = animate
-    ? { ...style, transition: `all ${speed}s ease` }
+    ? { transition: `all ${speed}s ease`, textDecoration: "none", ...style }
     : style;
   const _target = target ? "_" + target.replace("_", "") : undefined;
   const _rel =
@@ -80,6 +80,8 @@ export const Anchor = ({
   const prefix = tel ? "tel:" : mailto ? "mailto:" : "";
   const _to = tel ? to.replace(/\D/g, "") : to;
   const _link = tel ? "tel" : mailto ? "mailto" : "anchor";
+
+
   return (
     <a
       href={prefix + _to}
