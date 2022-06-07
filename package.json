@@ -1,6 +1,6 @@
 {
   "name": "wmk-link",
-  "version": "1.2.0",
+  "version": "1.2.3",
   "description": "WMK Component Library on Typescript",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",

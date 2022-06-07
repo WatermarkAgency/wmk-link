@@ -20,3 +20,7 @@ _to_ can be left blank for _tel_ and _mailto_ if {children} is phone number / em
 ### GTM Data Layer
 
 Pass an object (_ToGtmDatalayer_: {event: string, params: {[key: string]: string}[]}) to the **toDataLayer** prop to trigger an event and meta data in Google Tag Manager
+
+## WmkButton
+
+Acts just like a normal button element but with the ability to push data to Google Tag Manager data layer.
