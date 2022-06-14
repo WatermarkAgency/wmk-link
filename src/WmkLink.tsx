@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "gatsby";
+import { GatsbyLinkProps, Link } from "gatsby";
 import { Anchor, AnchorReferrerPolicy, AnchorRel } from "./Anchor";
 import { GtmDataLayer, ToGtmDataLayer } from ".";
 
@@ -44,7 +44,7 @@ export interface WmkLinkProps {
  * Handles links to other pages within an app,
  * external links, or links to files.
  */
-export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
+export const WmkLink = React.forwardRef<HTMLAnchorElement, WmkLinkProps>(
   (
     {
       onClick,
@@ -57,7 +57,6 @@ export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
       className,
       label,
       title,
-      wrapperStyle,
       role = "link",
       rel,
       download,
@@ -80,61 +79,65 @@ export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
         setDataLayer(currentDataLayer);
       }
     }, [toDataLayer]);
-    return (
-      <div ref={ref} style={{ display: `inline`, ...wrapperStyle }}>
-        {target || mailto || tel ? (
-          <Anchor
-            id={id}
-            onClick={
-              onClick
-                ? onClick
-                : toDataLayer && dataLayer
-                ? () => {
-                    dataLayer.push({
-                      event: toDataLayer.event,
-                      ...toDataLayer.params
-                    });
-                  }
-                : undefined
-            }
-            style={style}
-            to={mailto ? `mailto:${mailToText}` : tel ? `tel:${telText}` : to}
-            target={target}
-            className={className}
-            label={label}
-            title={title}
-            role={role}
-            rel={rel}
-            download={download}
-            hreflang={hreflang}
-            referrerpolicy={referrerpolicy}>
-            {children}
-          </Anchor>
-        ) : (
-          <Link
-            id={id}
-            onClick={
-              onClick
-                ? onClick
-                : toDataLayer && dataLayer
-                ? () => {
-                    dataLayer.push({
-                      event: toDataLayer.event,
-                      ...toDataLayer.params
-                    });
-                  }
-                : undefined
-            }
-            to={to}
-            style={style}
-            className={className}
-            aria-label={label}
-            title={title}
-            role={role}>
-            {children}
-          </Link>
-        )}
-      </div>
+    return target || mailto || tel ? (
+      <Anchor
+        id={id}
+        ref={ref}
+        onClick={
+          onClick
+            ? onClick
+            : toDataLayer && dataLayer
+            ? () => {
+                dataLayer.push({
+                  event: toDataLayer.event,
+                  ...toDataLayer.params
+                });
+              }
+            : undefined
+        }
+        style={style}
+        to={mailto ? `mailto:${mailToText}` : tel ? `tel:${telText}` : to}
+        target={target}
+        className={className}
+        label={label}
+        title={title}
+        role={role}
+        rel={rel}
+        download={download}
+        hreflang={hreflang}
+        referrerpolicy={referrerpolicy}>
+        {children}
+      </Anchor>
+    ) : (
+      <CustomGatsbyLink
+        ref={ref}
+        id={id}
+        onClick={
+          onClick
+            ? onClick
+            : toDataLayer && dataLayer
+            ? () => {
+                dataLayer.push({
+                  event: toDataLayer.event,
+                  ...toDataLayer.params
+                });
+              }
+            : undefined
+        }
+        to={to}
+        style={style}
+        className={className}
+        aria-label={label}
+        title={title}
+        role={role}>
+        {children}
+      </CustomGatsbyLink>
     );
   }
 );
+
+function CustomGatsbyLink(
+  props: GatsbyLinkProps<Record<string, unknown>> & HTMLAnchorElement
+) {
+  return <Link {...props}>{props.children}</Link>;
+}

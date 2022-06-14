@@ -47,57 +47,62 @@ export interface AnchorProps {
   referrerpolicy?: AnchorReferrerPolicy;
 }
 
-export const Anchor = ({
-  onClick,
-  to,
-  id,
-  className,
-  target,
-  children,
-  style,
-  speed = 0.3,
-  mailto,
-  tel,
-  animate = true,
-  rel,
-  label,
-  title,
-  role,
-  download,
-  hreflang,
-  referrerpolicy
-}: AnchorProps) => {
-  const _style = animate
-    ? { transition: `all ${speed}s ease`, textDecoration: "none", ...style }
-    : style;
-  const _target = target ? "_" + target.replace("_", "") : undefined;
-  const _rel =
-    !rel && _target === "_blank"
-      ? "noopener noreferrer"
-      : Array.isArray(rel)
-      ? rel.join(" ")
-      : "";
-  const prefix = tel ? "tel:" : mailto ? "mailto:" : "";
-  const _to = tel ? to.replace(/\D/g, "") : to;
-  const _link = tel ? "tel" : mailto ? "mailto" : "anchor";
+export const Anchor = React.forwardRef<HTMLAnchorElement, AnchorProps>(
+  (
+    {
+      onClick,
+      to,
+      id,
+      className,
+      target,
+      children,
+      style,
+      speed = 0.3,
+      mailto,
+      tel,
+      animate = true,
+      rel,
+      label,
+      title,
+      role,
+      download,
+      hreflang,
+      referrerpolicy
+    },
+    ref
+  ) => {
+    const _style = animate
+      ? { transition: `all ${speed}s ease`, textDecoration: "none", ...style }
+      : style;
+    const _target = target ? "_" + target.replace("_", "") : undefined;
+    const _rel =
+      !rel && _target === "_blank"
+        ? "noopener noreferrer"
+        : Array.isArray(rel)
+        ? rel.join(" ")
+        : "";
+    const prefix = tel ? "tel:" : mailto ? "mailto:" : "";
+    const _to = tel ? to.replace(/\D/g, "") : to;
+    const _link = tel ? "tel" : mailto ? "mailto" : "anchor";
 
-
-  return (
-    <a
-      href={prefix + _to}
-      id={id ? id : undefined}
-      className={wmkClass(_link, "link", className)}
-      target={_target}
-      rel={_rel}
-      style={_style}
-      aria-label={label}
-      onClick={onClick}
-      title={title}
-      role={role}
-      download={download ? download : undefined}
-      hrefLang={hreflang}
-      referrerPolicy={referrerpolicy}>
-      {children}
-    </a>
-  );
-};
+    return (
+      <a
+        ref={ref}
+        href={prefix + _to}
+        id={id ? id : undefined}
+        className={wmkClass(_link, "link", className)}
+        target={_target}
+        rel={_rel}
+        style={_style}
+        aria-label={label}
+        onClick={onClick}
+        title={title}
+        role={role}
+        download={download ? download : undefined}
+        hrefLang={hreflang}
+        referrerPolicy={referrerpolicy}>
+        {children}
+      </a>
+    );
+  }
+);
