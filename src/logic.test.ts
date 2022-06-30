@@ -1,6 +1,6 @@
 import { convertPhone } from "./logic";
 
-const phoneNumbers = [
+export const phoneNumbers = [
   `1-800-279-TALK`,
   `1-844-493-8255`,
   `1-800-950-6264`,
@@ -11,7 +11,7 @@ const phoneNumbers = [
   `1.800.272.3900`
 ];
 
-const converted = [
+export const converted = [
   `18002798255`,
   `18444938255`,
   `18009506264`,

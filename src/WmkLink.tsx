@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link } from "gatsby";
 import { Anchor, AnchorReferrerPolicy, AnchorRel } from "./Anchor";
 import { GtmDataLayer, ToGtmDataLayer } from ".";
+import { convertPhone } from "./logic";
 
 declare global {
   interface Window {
@@ -72,7 +73,7 @@ export const WmkLink = React.forwardRef<HTMLDivElement, WmkLinkProps>(
     const mailToText = to || children;
     const _telText = to || children || "";
     const telText =
-      typeof _telText === "string" ? _telText.replace(/\D/g, "") : _telText;
+      typeof _telText === "string" ? convertPhone(_telText) : _telText;
 
     React.useEffect(() => {
       const currentDataLayer = window && window.dataLayer;
