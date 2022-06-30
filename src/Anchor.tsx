@@ -1,6 +1,7 @@
 import * as React from "react";
 import { wmkClass } from "./logic";
 import { LinkTarget } from "./WmkLink";
+import { convertPhone } from "./logic";
 
 export type AnchorRel =
   | "alternate"
@@ -78,9 +79,8 @@ export const Anchor = ({
       ? rel.join(" ")
       : "";
   const prefix = tel ? "tel:" : mailto ? "mailto:" : "";
-  const _to = tel ? to.replace(/\D/g, "") : to;
+  const _to = tel ? convertPhone(to) : to;
   const _link = tel ? "tel" : mailto ? "mailto" : "anchor";
-
 
   return (
     <a

@@ -1,12 +1,12 @@
 {
   "name": "wmk-link",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "WMK Component Library on Typescript",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "rollup -c",
     "watch": "rollup -cw"
   },
@@ -31,5 +31,12 @@
   "peerDependencies": {
     "gatsby": "^4.2.0",
     "react": "^17.0.2"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "@types/jest": "^28.1.3",
+    "jest": "^28.1.2",
+    "ts-jest": "^28.0.5"
   }
 }
